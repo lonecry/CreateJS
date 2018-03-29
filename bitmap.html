@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang = "zh-CN">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0"/>
+    <link href = "css/style.css" rel = "stylesheet">
+    <script src = "js/jquery-1.4.2.min.js"></script>
+    <script src = "js/createjs.min.js"></script>
+    <title>Spancebar Animation</title>
+</head>
+<body>
+<canvas id = "canvas"></canvas>
+<audio id = "audio" src = "./images/audio.wav"></audio>
+</body>
+<script>
+    $(function (){
+        var canvas = document.getElementById('canvas');
+        canvas.width = 1000;
+        canvas.height = 600
+        /*var stage = new createjs.Stage(canvas)//创建stage舞台
+        var gameView = new createjs.Container()
+        stage.addChild(gameView)//把容器添加到舞台中去
+        var bitmap = new createjs.Bitmap('./images/index2.jpg')
+        // var maskShape = new createjs.Shape();//遮罩层
+        // maskShape.graphics.beginFill(createjs.Graphics.getHSL( 0,  0,  0, 0.1 )).drawCircle(0, 281, 1000);
+        // bitmap.mask = maskShape;
+        // gameView.addChild(maskShape);
+        gameView.addChild(bitmap);
+        stage.enableMouseOver()
+        createjs.Ticker.setFPS(30);
+        createjs.Ticker.addEventListener("tick", stage)
+        stage.addEventListener('click', function (){
+            console.log('hey man , what are you doing?')
+            document.getElementById('audio').play()//汽车启动
+        })
+        stage.addEventListener('mouseover', function (){
+            $("#canvas").css('cursor', 'pointer')
+        })
+        createjs.Ticker.addEventListener("tick", function (){
+            stage.update()
+        });*/
+        var stage = new createjs.Stage(canvas);//创建出SpriteSheetZ
+        // var mc = new createjs.MovieClip(null, 0, true, {start: 200, stop: 0});
+        // stage.addChild(mc);
+        // // var child1 = new createjs.Shape(new createjs.Graphics().beginFill("#999999").drawCircle(30, 30, 30));
+        // var child2 = new createjs.Shape(new createjs.Graphics().beginFill("#5a9cfb").drawCircle(30, 30, 30));
+        // // mc.timeline.addTween(createjs.Tween.get(child1).to({x: 0}).to({x: 1000}, 200).to({x: 0}, 200));
+        // mc.timeline.addTween(
+        //     createjs.Tween.get(child2).to({//左上角的点
+        //         x: 940,
+        //         y: 502
+        //     }).to({
+        //         x: 0,
+        //         y: 0
+        //     }, 200).to({
+        //         x: 940,
+        //         y: 502
+        //     }, 200));
+        // mc.gotoAndPlay("start");
+        var container = new createjs.Container()
+        var datainstance = {//创建一个动画实例
+            "images": ["./images/animate.png"],
+            "frames": {
+                "height": 292,            //每个图的高度为292，宽度为165，一共有64张图
+                "width": 165,
+                "count": 64
+            },
+            "animations": {
+                "stop": [0, 0, 'run'],
+                "run": [0, 25],                  //0帧到25帧是跳
+                "jump": [26, 63, 'stop', 1]         //26帧到63帧是跑
+            }
+        }
+        var spriteSheet = new createjs.SpriteSheet(datainstance)
+        animation = new createjs.Sprite(spriteSheet);
+        console.log(animation);
+        animation.gotoAndPlay("run");
+        container.addChild(animation)
+        stage.addChild(container)
+        //两个参数，一个是spritesheet的对象，
+        stage.x = 300;   //位置为100，100
+        stage.y = 150;
+        //监听事件，60毫秒更新stage
+        createjs.Ticker.setFPS(45);
+        createjs.Ticker.addEventListener("tick", stage);
+        stage.enableMouseOver()
+        stage.addEventListener("click", runandjump);
+        function runandjump(){
+            animation.gotoAndPlay("jump");
+        }
+        ifjumpend = true
+        //键盘操作
+        $(document).keyup(function (event){
+            if (event.keyCode == 32) {
+                console.log('yes');
+                ifjumpend = false
+                // animation.stop();
+                animation.gotoAndPlay("jump");
+                setTimeout(function (){
+                    ifjumpend = true
+                }, 1500)
+            }
+            return false;
+        });
+    })
+</script>
+</html>

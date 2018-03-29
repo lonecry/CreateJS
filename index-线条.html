@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang = "zh-CN">
+<head>
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1.0"/>
+    <link href = "./css/style.css" rel = "stylesheet">
+    <script src = "./js/jquery-1.4.2.min.js"></script>
+    <script src = "./js/createjs.js"></script>
+    <title></title>
+</head>
+<body>
+<canvas id = "myCanvas"></canvas>
+<script>
+    $(function (){
+        var canvas = document.getElementById('myCanvas');
+        var context = canvas.getContext('2d');
+        canvas.width = 1000;
+        canvas.height = 800;
+        var stage = new createjs.Stage(canvas);
+        var x = 0, y = 400, flag = true;
+        function drawline(){
+            var dot = new createjs.Shape()
+            dot.graphics.beginFill(colorRandom(Math.floor(x + 300)));
+            dot.graphics.drawCircle(x, y, 1);
+            stage.addChild(dot);
+            stage.update();
+            // dot.graphics.setStrokeStyle(1, ["round"]).beginStroke(colorRandom(Math.floor(x + 300)));
+            // dot.graphics.moveTo(lastx, lasty);
+            // dot.graphics.quadraticCurveTo(lastx, lasty, x, y);
+            // dot.graphics.endStroke();
+            stage.addChild(dot);
+            stage.update();
+        }
+        createjs.Ticker.setFPS(60);
+        createjs.Ticker.addEventListener("tick", _tick);
+        function _tick(){
+
+            // polystar.rotation = Math.floor(Math.random() * 60);
+            if (flag) {
+                x += 2
+                if (x == 1000) {
+                    stage.removeAllChildren()
+                    flag = false
+                }
+            } else {
+                x -=2
+                if (x == 0) {
+                    stage.removeAllChildren()
+                    flag = true
+                }
+            }
+            lastx = x;
+            lasty = y;
+            y = 400 - Math.sin(x * (16)) * 150
+            drawline()
+        }
+        function colorRandom(i){
+            var r = 0,
+                g = 0,
+                b = 0;
+            i = i % 1530;
+            var k = Math.floor(i / 255);
+            i = i % 255;
+            switch (k) {
+                case  0:
+                    r = 0;
+                    g = 255;
+                    b = 255 - i;
+                    // console.log("rgb(" + r + "," + g + "," + b + ")")
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                    break;
+                case  1:
+                    r = i;
+                    g = 255;
+                    b = 0;
+                    // console.log("rgb(" + r + "," + g + "," + b + ")")
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                    break;
+                case 2:
+                    r = 255;
+                    g = 255 - i;
+                    b = 0;
+                    // console.log("rgb(" + r + "," + g + "," + b + ")")
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                    break;
+                case 3:
+                    r = 255;
+                    g = 0;
+                    b = i;
+                    // console.log("rgb(" + r + "," + g + "," + b + ")")
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                    break;
+                case 4:
+                    r = 255 - i;
+                    g = 0;
+                    b = 255;
+                    // console.log("rgb(" + r + "," + g + "," + b + ")")
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                    break;
+                case 5:
+                    r = 0;
+                    g = i;
+                    b = 255;
+                    // console.log("rgb(" + r + "," + g + "," + b + ")")
+                    return "rgb(" + r + "," + g + "," + b + ")";
+                    break;
+            }
+        }
+    })
+</script>
+</body>
+</html>

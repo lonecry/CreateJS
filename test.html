@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset = "utf-8">
+    <title>沿正弦曲线移动的圆</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id = "duxing.org"></canvas>
+<script src = "https://code.createjs.com/createjs-2015.05.21.min.js"></script>
+<script>
+    var canvas = document.getElementById('duxing.org');
+    function fullScreenCanvas(){
+        var clientWidth = document.body.clientWidth,
+            clientHeight = document.body.clientHeight;
+        canvas.setAttribute('width', clientWidth);
+        canvas.setAttribute('height', clientHeight);
+    }
+    var stage = new createjs.Stage(canvas);
+    var circle = new createjs.Shape();
+    circle.graphics.beginStroke('#000');
+    circle.graphics.beginFill('#FFF000');
+    circle.graphics.drawCircle(0, 0, 30);
+    circle.x = 0;
+    circle.y = 75;
+    stage.addChild(circle);
+    var derection = 1;
+    createjs.Ticker.setFPS(24);
+    createjs.Ticker.addEventListener("tick", function (e){
+        circle.x += 1 * derection;
+        circle.y = 50 + Math.sin(circle.x / 2) * 3;
+        stage.update();
+        if (circle.x > canvas.width || circle.x < 0) {
+            derection *= -1;
+        }
+    });
+</script>
+</body>
+</html>
